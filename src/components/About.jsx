@@ -1,13 +1,21 @@
 import React from "react";
+import { AboutSildeshow } from "./slider_for_about";
 
-let About = () =>{
+let About = () => {
+  return (
+    <>
+      <div className="main_about">
+        <div className="heading">
+          <h1 className="get_about_heading">
+            Some popular brands on our webite
+          </h1>
+        </div>
+        <div className="about_slide">
+          <AboutSildeshow />
+        </div>
+      </div>
+    </>
+  );
+};
 
-    return(
-
-        <>
-        <h1>About Our Company</h1>
-        </>
-    )
-}
-
-export {About}
+export { About };
