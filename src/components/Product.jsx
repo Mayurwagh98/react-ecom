@@ -28,6 +28,16 @@ let Product = () => {
     getData();
   }, []);
 
+  let addtoCart = (item) => {
+    let localData = JSON.parse(localStorage.getItem("CartItem")) || [];
+
+    localData.push(item);
+
+    localStorage.setItem("CartItem", JSON.stringify(localData));
+
+    console.log(localData);
+  };
+
   return (
     <>
       <h1>Product</h1>
@@ -48,15 +58,14 @@ let Product = () => {
       <div className="products_div">
         {data.map((item, index) => {
           return (
-            
-              <div key={index}>
-                <img src={item.image} alt="images" />
-                <div className="price_div">
-                  <h2>{item.price}</h2>
-                  <h4>{item.title}</h4>
-                </div>
+            <div key={index}>
+              <img src={item.image} alt="images" />
+              <div className="price_div">
+                <h2>{item.price}</h2>
+                <h4>{item.title}</h4>
               </div>
-           
+              <button onClick={addtoCart}>Add to Cart</button>
+            </div>
           );
         })}
       </div>
