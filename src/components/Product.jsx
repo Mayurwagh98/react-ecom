@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 let Product = () => {
   let [data, setData] = useState([]);
-  let [page, setPage] = useState(1)
+  let [page, setPage] = useState(1);
 
   // https://dbioz2ek0e.execute-api.ap-south-1.amazonaws.com/mockapi/get-products?limit=10&page=1
   let getData = async () => {
@@ -32,7 +32,7 @@ let Product = () => {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [page]);
 
   let addtoCart = (item) => {
     let localData = JSON.parse(localStorage.getItem("CartItem")) || [];
@@ -44,22 +44,25 @@ let Product = () => {
     console.log(localData);
   };
 
-  let handleNext = () =>{
-    
-    setPage(++page)
-    // setPage(page += 1)
+  let handleNext = () => {
+    setPage((page += 1));
     // setData(data)
-    getData()
-    console.log(data)
-  }
+    // getData()
+    
+    console.log(data);
+  };
 
-  let handlePrev = () =>{
-
-    // setPage(page -= 1)
-
-    setPage(--page)
-    getData()
-  }
+  let handlePrev = () => {
+    if (page == 0) {
+      page = 1;
+      // setPage(page)
+    }
+    else{
+      setPage(page -= 1)
+    }
+    
+    // getData()
+  };
 
   return (
     <>
@@ -78,8 +81,8 @@ let Product = () => {
           );
         })}
       </div> */}
-      <button onClick={handlePrev} >prev</button>
-      <button onClick={handleNext} >next</button>
+      <button onClick={handlePrev}>prev</button>
+      <button onClick={handleNext}>next</button>
       <div className="products_div">
         {data.map((item, index) => {
           return (
