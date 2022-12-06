@@ -5,12 +5,14 @@ import { useEffect } from "react";
 
 let Product = () => {
   let [data, setData] = useState([]);
+  let [page, setPage] = useState(1)
+
   // https://dbioz2ek0e.execute-api.ap-south-1.amazonaws.com/mockapi/get-products?limit=10&page=1
   let getData = async () => {
     await axios
       // .get("https://fakestoreapi.com/products")
       .get(
-        `https://dbioz2ek0e.execute-api.ap-south-1.amazonaws.com/mockapi/get-products?limit=10&page=1`
+        `https://dbioz2ek0e.execute-api.ap-south-1.amazonaws.com/mockapi/get-products?limit=10&page=${page}`
       )
       .then((res) => {
         // let data = res.data;
@@ -42,6 +44,23 @@ let Product = () => {
     console.log(localData);
   };
 
+  let handleNext = () =>{
+    
+    setPage(++page)
+    // setPage(page += 1)
+    // setData(data)
+    getData()
+    console.log(data)
+  }
+
+  let handlePrev = () =>{
+
+    // setPage(page -= 1)
+
+    setPage(--page)
+    getData()
+  }
+
   return (
     <>
       <h1>Product</h1>
@@ -59,8 +78,8 @@ let Product = () => {
           );
         })}
       </div> */}
-      <button>prev</button>
-      <button>next</button>
+      <button onClick={handlePrev} >prev</button>
+      <button onClick={handleNext} >next</button>
       <div className="products_div">
         {data.map((item, index) => {
           return (
