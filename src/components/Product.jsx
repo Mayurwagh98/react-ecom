@@ -12,6 +12,9 @@ import Tooltip from "@mui/material/Tooltip";
 let Product = () => {
   let [data, setData] = useState([]); //getting whole data
   let [page, setPage] = useState(1);
+  let [sorthtol, setSorthtol] = useState([]);
+  let [sortltoh, setSortltoh] = useState([]);
+
   // https://dbioz2ek0e.execute-api.ap-south-1.amazonaws.com/mockapi/get-products?limit=10&page=1
   let getData = async () => {
     await axios
@@ -23,10 +26,6 @@ let Product = () => {
         data = res.data.data;
 
         setData(data);
-
-        console.log(data);
-
-        // console.log(res.data)
       })
       .catch((e) => {
         console.log(e);
@@ -35,17 +34,24 @@ let Product = () => {
 
   useEffect(() => {
     getData();
-  }, [page]);
+  }, [page]); // passing the array dependncy because it should render everytimg user change the page
+
+  useEffect(() => {
+    getData();
+  }, [sorthtol]); // passing the array dependncy because it should render everytimg user clicks on sort H to L
 
   let addtoCart = (item) => {
     // console.log(item)
     let localData = JSON.parse(localStorage.getItem("CartItem")) || [];
-
+    // sending the qty = 1 as default, cause by default qty should be 1 because user already added 1 item in the cart
+    let qty = 1;
+    item = { ...item, qty }; // adding the qty in the LS with the privious item
     localData.push(item);
 
     localStorage.setItem("CartItem", JSON.stringify(localData));
+
     alert(`Product added to the cart`);
-    console.log(localData);
+    // console.log(localData);
   };
 
   let handleNext = () => {
@@ -53,8 +59,7 @@ let Product = () => {
       //data ends after page 4, not to render after that this is the condition given
       setPage((page += 1));
     }
-
-    console.log(data);
+    // console.log(data);
   };
 
   let handlePrev = () => {
@@ -66,6 +71,26 @@ let Product = () => {
     }
 
     // getData()
+  };
+
+  // ------------------Sorting-----------------
+
+  let handleSort2 = () => {
+    sortltoh = data.sort((a, b) => {
+      return b.price - a.price;
+    });
+
+    setSortltoh(sortltoh);
+    console.log(sortltoh);
+  };
+
+  let handleSort1 = () => {
+    sorthtol = data.sort((a, b) => {
+      return a.price - b.price;
+    });
+
+    setSorthtol(sorthtol);
+    console.log(sorthtol);
   };
 
   return (
@@ -85,6 +110,7 @@ let Product = () => {
           );
         })}
       </div> */}
+      {/* ----------------Pagination-------------------- */}
       <button
         onClick={handlePrev}
         disabled={page == 1}
@@ -99,6 +125,10 @@ let Product = () => {
       >
         Next
       </button>
+      {/* ----------------Sorting----------------------- */}
+      <button onClick={handleSort2}>Sort H to L</button>
+      <button onClick={handleSort1}>Sort L to H</button>
+
       <div className="products_div">
         {data.map((item, index) => {
           return (
