@@ -2,7 +2,6 @@ import React, { useState, useMemo } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
 import { linkClasses } from "@mui/material";
-import { useEffect } from "react";
 
 let Cart = () => {
   let localData = JSON.parse(localStorage.getItem("CartItem")) || [];
@@ -13,22 +12,25 @@ let Cart = () => {
 
     localStorage.setItem("CartItem", JSON.stringify(localData));
 
-    setDisplayCart([...localData]);
+    setDisplayCart([...localData]); //to display the updated data after deleting item
   };
 
+  //------------------ Quantity Logic-------------------------------
   let handleQty = (inre_decre, item) => {
     console.log(item);
 
     if (inre_decre === "Add") {
+      // when user clicks on '+' then increase the quantity
       item.qty++;
     } else if (inre_decre === "Sub") {
+      // when user clicks on '-' then decrease the quantity
       item.qty--;
     }
 
     console.log(item);
     console.log(localData);
-    localStorage.setItem("CartItem", JSON.stringify([...localData]));
-    setDisplayCart([...localData]);
+    localStorage.setItem("CartItem", JSON.stringify([...localData])); // sending the updated data to LS
+    setDisplayCart([...localData]); // to render/display the updated data
   };
 
   let sum = 0;
@@ -65,7 +67,7 @@ let Cart = () => {
                   justifyContent: "center",
                   background: "transparent",
                   margin: "auto",
-                  padding:"5px"
+                  padding: "5px",
                 }}
               >
                 <button onClick={() => handleQty("Add", item)}>+</button>
@@ -79,7 +81,10 @@ let Cart = () => {
               </div>
 
               <Tooltip title="Delete">
-                <DeleteIcon onClick={() => deleteItem(index)} style={{paddig:"5px", margin:"5px"}}>
+                <DeleteIcon
+                  onClick={() => deleteItem(index)}
+                  style={{ paddig: "5px", margin: "5px" }}
+                >
                   Delete
                 </DeleteIcon>
               </Tooltip>
