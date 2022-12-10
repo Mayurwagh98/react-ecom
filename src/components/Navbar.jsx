@@ -10,6 +10,8 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Tooltip from "@mui/material/Tooltip";
 
 let Navbar = () => {
+  let user = JSON.parse(localStorage.getItem("LoginDetails"));
+
   return (
     <>
       <div className="navbar conMain">
@@ -20,12 +22,12 @@ let Navbar = () => {
           </Tooltip>
         </Link>
 
-        <Link to="/about" className="home_link">
-          {/* About Link*/}
-          <Tooltip title="About">
+        {/* <Link to="/about" className="home_link"> */}
+        {/* About Link*/}
+        {/* <Tooltip title="About">
             <InfoIcon />
-          </Tooltip>
-        </Link>
+          </Tooltip> */}
+        {/* </Link> */}
 
         <Link to="/product" className="home_link">
           {/* Products Link*/}
@@ -36,9 +38,16 @@ let Navbar = () => {
 
         <Link to="/login" className="home_link">
           {/* Login Link*/}
-          <Tooltip title="Login">
+         
+          {user ? (
+            // "Logout"
+            `Hi, ${user.loginFname}` // displaying user's name once he logged in
+          ) : (
+            // user.loginFname
+            <Tooltip title="Login"> 
             <LoginIcon />
           </Tooltip>
+          )}
         </Link>
 
         <Link to="/signup" className="home_link">
