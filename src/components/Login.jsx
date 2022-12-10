@@ -8,10 +8,12 @@ let Login = () => {
     loginPass: "",
   });
 
-  let signupData = JSON.parse(localStorage.getItem("Formdata")) 
-  let loginDetails = JSON.parse(localStorage.getItem("LoginDetails")) || [];
+  let signupData = JSON.parse(localStorage.getItem("Formdata"));
+  // let loginDetails = JSON.parse(localStorage.getItem("LoginDetails")) || [];
+  let loginDetails = JSON.parse(localStorage.getItem("LoginDetails"));
+
   // console.log(signupData)
-  
+
   let handleLoginform = (event) => {
     let { name, value } = event.target;
     setloginformData({
@@ -22,7 +24,7 @@ let Login = () => {
 
   let loginFormSubmit = (event) => {
     event.preventDefault();
-    
+
     let flag = false;
     for (let x of signupData) {
       if (x.email === loginformData.loginEmail) {
@@ -30,8 +32,10 @@ let Login = () => {
       }
     }
     if (flag) {
-      loginDetails.push(loginformData);
-      localStorage.setItem("LoginDetails", JSON.stringify(loginDetails));
+      // loginDetails.push(loginformData);
+
+      localStorage.setItem("LoginDetails", JSON.stringify(loginformData));
+
       // console.log(loginDetails);
       setloginformData({ loginFname: "", loginEmail: "", loginPass: "" });
       alert(`Login Successfull`);
