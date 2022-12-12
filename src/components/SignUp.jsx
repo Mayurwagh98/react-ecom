@@ -38,8 +38,9 @@ let Signup = () => {
   return (
     <>
       <h1>This</h1>
-      <div style={{ marinTop: "400px" }}>
+      <div style={{ marginTop: "100px" }}>
         <form onSubmit={submitForm}>
+          <h1>Singup</h1>
           <input
             type="text"
             value={formData.fname}
