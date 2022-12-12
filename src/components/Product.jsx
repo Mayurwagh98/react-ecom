@@ -14,6 +14,7 @@ let Product = () => {
   let [page, setPage] = useState(1);
   let [sorthtol, setSorthtol] = useState([]);
   let [sortltoh, setSortltoh] = useState([]);
+  let [filterData, setFilterData] = useState(data);
 
   // https://dbioz2ek0e.execute-api.ap-south-1.amazonaws.com/mockapi/get-products?limit=10&page=1
   let getData = async () => {
@@ -24,8 +25,9 @@ let Product = () => {
       )
       .then((res) => {
         data = res.data.data;
-
         setData(data);
+        filterData = data;
+        setFilterData(filterData);
       })
       .catch((e) => {
         console.log(e);
@@ -93,6 +95,41 @@ let Product = () => {
     console.log(sorthtol);
   };
 
+  let newData;
+
+  let handleFilter = (event) => {
+    // let val = document.getElementById("filter").value;
+    let val = event.target.value;
+
+    if (val === "300") {
+      newData = filterData.filter((item) => {
+        return item.price >= "300" && item.price <= "500";
+      });
+
+      setData(newData);
+      console.log(newData);
+    } else if (val === "500") {
+      newData = filterData.filter((item) => {
+        return item.price >= "500" && item.price <= "700";
+      });
+      setData(newData);
+
+      console.log(newData);
+    } else if (val === "1000") {
+      let newData = filterData.filter((item) => {
+        return item.price >= "1000" && item.price <= "2000";
+      });
+      setData(newData);
+
+      console.log(newData);
+    } else if (val == "") {
+      setData(filterData);
+    } else {
+      alert(`No products found in this range`);
+      // setData(filterData);
+    }
+  };
+
   return (
     <>
       <h1>Product</h1>
@@ -129,6 +166,17 @@ let Product = () => {
       <button onClick={handleSort2}>Sort H to L</button>
       <button onClick={handleSort1}>Sort L to H</button>
 
+      {/* ---------------Filter------------------ */}
+
+      <select onChange={handleFilter} id="filter">
+        <option value="">All</option>
+
+        <option value="300">Price:- 300 to 500</option>
+        <option value="500">Price:- 500 to 700</option>
+
+        <option value="1000">Price:- 1000 to 2000</option>
+      </select>
+      {/* ---------------------------------------------------- */}
       <div className="products_div">
         {data.map((item, index) => {
           return (
