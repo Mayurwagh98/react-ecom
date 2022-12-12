@@ -8,9 +8,36 @@ import HomeIcon from "@mui/icons-material/Home";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Tooltip from "@mui/material/Tooltip";
+import { useNavigate } from "react-router-dom";
+import Person2Icon from "@mui/icons-material/Person2";
+import { Select } from "@mui/material";
 
 let Navbar = () => {
   let user = JSON.parse(localStorage.getItem("LoginDetails"));
+
+  let handleLogout = () => {
+    alert("Logged Out!");
+    localStorage.removeItem("LoginDetails");
+
+    {
+      <Navigate />;
+    }
+  };
+
+  // let handleChanges = () => {
+  //   let val = document.getElementById("changes").value;
+
+  //   if (val == "Logout") {
+  //     handleLogout();
+  //   } 
+  //   else if(val == ""){
+  //     return (
+  //       <Tooltip title="Login">
+  //         <LoginIcon />
+  //       </Tooltip>
+  //     );
+  //   }
+  // };
 
   return (
     <>
@@ -36,19 +63,31 @@ let Navbar = () => {
           </Tooltip>
         </Link>
 
-        <Link to="/login" className="home_link">
+         <Link to="/login" className="home_link">
           {/* Login Link*/}
-         
-          {user ? (
+         {user ? (
             // "Logout"
-            `Hi, ${user.loginFname}` // displaying user's name once he logged in
-          ) : (
-            // user.loginFname
-            <Tooltip title="Login"> 
-            <LoginIcon />
-          </Tooltip>
-          )}
+
+            `${user.loginFname}` // displaying user's name once he logged in 
+        ) : (
+        // user.loginFname
+        <Tooltip title="Login">
+              <LoginIcon />
+            </Tooltip>
+        )}
         </Link>
+
+        <Link onClick={handleLogout}>Logout</Link>
+
+        {/* {
+          <select onChange={handleChanges} id="changes">
+            <option value="Login">{user.loginFname}</option>
+            <option value="Logout">
+              <Link onClick={handleLogout}>Logout</Link>
+            </option>
+            <option value=""></option>
+          </select>
+        } */}
 
         <Link to="/signup" className="home_link">
           {/* Signup Link*/}
