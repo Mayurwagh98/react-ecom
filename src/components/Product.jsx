@@ -2,12 +2,14 @@ import React, { useState } from "react";
 // import { products } from "./ToppicksData";
 import axios from "axios";
 import { useEffect } from "react";
-// import NextPlanIcon from '@mui/icons-material/NextPlan';
-// import RedoIcon from "@mui/icons-material/Redo";
-// import KeyboardTabIcon from '@mui/icons-material/KeyboardTab';
-// import UndoIcon from "@mui/icons-material/Undo";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Tooltip from "@mui/material/Tooltip";
+import { Roller } from "./Loaders/Roller";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import { Button, CardActionArea, CardActions } from "@mui/material";
+import {Product_Navbar} from "./Navbars/Product_Navbars"
 
 let Product = () => {
   let [data, setData] = useState([]); //getting whole data
@@ -15,6 +17,7 @@ let Product = () => {
   let [sorthtol, setSorthtol] = useState([]);
   let [sortltoh, setSortltoh] = useState([]);
   let [filterData, setFilterData] = useState(data);
+  let [loading, setLoading] = useState(true);
 
   // https://dbioz2ek0e.execute-api.ap-south-1.amazonaws.com/mockapi/get-products?limit=10&page=1
   let getData = async () => {
@@ -23,8 +26,12 @@ let Product = () => {
       .get(
         `https://dbioz2ek0e.execute-api.ap-south-1.amazonaws.com/mockapi/get-products?limit=10&page=${page}`
       )
+
       .then((res) => {
         data = res.data.data;
+        setTimeout(() => {
+          setLoading(false); // making loading status false, as the data is already loaded
+        }, 1000);
         setData(data);
         filterData = data;
         setFilterData(filterData);
@@ -83,7 +90,8 @@ let Product = () => {
     });
 
     setSortltoh(sortltoh);
-    console.log(sortltoh);
+
+    // console.log(sortltoh);
   };
 
   let handleSort1 = () => {
@@ -107,6 +115,7 @@ let Product = () => {
       });
 
       setData(newData);
+
       console.log(newData);
     } else if (val === "500") {
       newData = filterData.filter((item) => {
@@ -132,6 +141,7 @@ let Product = () => {
 
   return (
     <>
+    <Product_Navbar />
       <h1>Product</h1>
       {/* <div className="products_div">
         {products.map((ele, index) => {
@@ -151,53 +161,93 @@ let Product = () => {
       <button
         onClick={handlePrev}
         disabled={page == 1}
-        style={{ padding: "10px", fontSize: "40px" }}
+        style={{ padding: "5px", fontSize: "20px", margin: "10px" }}
       >
         Prev
       </button>
       <button
         onClick={handleNext}
         disabled={page === 4}
-        style={{ padding: "10px", fontSize: "40px" }}
+        style={{ padding: "5px", fontSize: "20px", margin: "10px" }}
       >
         Next
       </button>
       {/* ----------------Sorting----------------------- */}
-      <button onClick={handleSort2}>Sort H to L</button>
-      <button onClick={handleSort1}>Sort L to H</button>
-
+      <button onClick={handleSort2} style={{ margin: "10px" }}>
+        Sort H to L
+      </button>
+      <button onClick={handleSort1} style={{ margin: "10px" }}>
+        Sort L to H
+      </button>
       {/* ---------------Filter------------------ */}
-
       <select onChange={handleFilter} id="filter">
         <option value="">All</option>
-
         <option value="300">Price:- 300 to 500</option>
         <option value="500">Price:- 500 to 700</option>
 
         <option value="1000">Price:- 1000 to 2000</option>
       </select>
       {/* ---------------------------------------------------- */}
-      <div className="products_div">
-        {data.map((item, index) => {
-          return (
-            <div key={index}>
-              <img src={item.image} alt="images" />
-              <div className="price_div">
-                <h2>{item.price}</h2>
-                <h4>{item.title}</h4>
-              </div>
-              <Tooltip title="Add to Cart">
-                <AddShoppingCartIcon
-                  onClick={() => addtoCart(item)}
-                  style={{ margin: "5px" }}
-                >
+      {/* {setLoading(true)} */}
+      {loading ? (
+        <h1 style={{}}>
+          <Roller />
+        </h1>
+      ) : (
+        // <div className="products_div">
+        //   {data.map((item, index) => {
+        //     return (
+        //       <div key={index}>
+        //         <img src={item.image} alt="images" />
+        //         <div className="price_div">
+        //           <h2>{item.price}</h2>
+        //           <h4>{item.title}</h4>
+        //         </div>
+        //         <Tooltip title="Add to Cart">
+        //           <AddShoppingCartIcon
+        //             onClick={() => addtoCart(item)}
+        //             style={{ margin: "5px" }}
+        //           >
+        //             Add to Cart
+        //           </AddShoppingCartIcon>
+        //         </Tooltip>
+        //       </div>
+        //     );
+        //   })}
+        // </div>
+        <div className="material_cards">
+          {data.map((item, index) => (
+            <Card className="childCard" key={index}>
+              <CardActionArea>
+                <CardMedia
+                  component="img"
+                  // height="450"
+                  display="block"
+                  image={item.image}
+                  alt="green iguana"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {item.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    fontSize="17px"
+                  >
+                    {item.price}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                <Button color="primary" onClick={() => addtoCart(item)}>
                   Add to Cart
-                </AddShoppingCartIcon>
-              </Tooltip>
-            </div>
-          );
-        })}
-      </div>
+                </Button>
+              </CardActions>
+            </Card>
+          ))}
+        </div>
+      )}
     </>
   );
 };
