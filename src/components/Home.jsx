@@ -3,12 +3,14 @@ import { SlideShow } from "./SlideShow";
 import { TodayDelas } from "./TodayDeals";
 import { Toppicks } from "./Toppicks";
 import { data, today_deals_images } from "./ToppicksData";
+import { Navbar } from "./Navbars/Home_Navbar";
 
 let Home = () => {
   return (
     <>
       {/* <h1>Home</h1> */}
       {/* <Link to="/" ><Home /></Link> */}
+      <Navbar />
 
       <div className="slide_show">
         <SlideShow />
@@ -19,7 +21,7 @@ let Home = () => {
         {today_deals_images.map((ele, index) => {
           return (
             <div key={index}>
-              <TodayDelas imgsrc={ele.img} title={ele.title}  />
+              <TodayDelas imgsrc={ele.img} title={ele.title} />
             </div>
           );
         })}
@@ -29,7 +31,7 @@ let Home = () => {
         {data.map((ele, index) => {
           return (
             <div key={index}>
-              <Toppicks imgsrc={ele.img}  title={ele.title} />
+              <Toppicks imgsrc={ele.img} title={ele.title} />
             </div>
           );
         })}
