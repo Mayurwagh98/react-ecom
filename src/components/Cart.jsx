@@ -1,18 +1,21 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
-import { linkClasses } from "@mui/material";
+// import { linkClasses } from "@mui/material";
+import { Product_Navbar } from "./Navbars/Product_Navbars";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 let Cart = () => {
   let localData = JSON.parse(localStorage.getItem("CartItem")) || [];
   let [displayCart, setDisplayCart] = useState([...localData]);
-
+  let navigate = useNavigate()
   let deleteItem = (i) => {
     localData.splice(i, 1);
 
     localStorage.setItem("CartItem", JSON.stringify(localData));
 
-    setDisplayCart([...localData]); //to display the updated data after deleting item
+    setDisplayCart([...localData]); //to display the updated data after deleting the items
   };
 
   //------------------ Quantity Logic-------------------------------
@@ -38,9 +41,13 @@ let Cart = () => {
     sum += x.price * x.qty;
   }
   // console.log(total);
+ let handleCheckout = () =>{
 
+    navigate("/checkout")
+ }
   return (
     <>
+      <Product_Navbar />
       <div
         style={{
           display: "flex",
@@ -48,7 +55,9 @@ let Cart = () => {
           justifyContent: "space-evenly",
         }}
       >
-        <h1>Cart:-{localData.length}</h1>
+        {/* <h1>Cart:-{localData.length}</h1> */}
+        
+
         <h1>Total:- {sum}</h1>
       </div>
       <div className="products_div">
@@ -57,7 +66,7 @@ let Cart = () => {
             <div key={index}>
               <img src={item.image} alt="image" />
               <div className="price_div">
-                <h2>{item.price}</h2>
+                <h2>{`₹${item.price}`}</h2>
                 <h4>{item.title}</h4>
               </div>
               <div
@@ -92,6 +101,7 @@ let Cart = () => {
           );
         })}
       </div>
+      <button onClick={handleCheckout}>Checkout</button>
     </>
   );
 };
